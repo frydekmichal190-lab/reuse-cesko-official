@@ -1,0 +1,1 @@
+// Sem přijde tvůj JavaScript – doplň později

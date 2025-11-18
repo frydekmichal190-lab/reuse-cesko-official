@@ -1,0 +1,9 @@
+{
+  "name": "ReUse Česko",
+  "short_name": "ReUse",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#287165",
+  "icons": []
+}
