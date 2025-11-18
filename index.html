@@ -2,12 +2,224 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#287165">
   <title>ReUse Česko</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- App content injected from original document -->
-  <div id="app-root">Aplikace bude zde – vlož původní HTML obsah.</div>
-<script src="app.js"></script>
-</body></html>
+  <div id="app-container">
+    <!-- Header/Navigation -->
+    <header class="header">
+      <h1 class="logo">ReUse Česko</h1>
+      <div class="header-icons">
+        <button class="header-btn" id="msg-btn" title="Zprávy">💬</button>
+        <button class="header-btn" id="profile-btn" title="Profil">👤</button>
+      </div>
+    </header>
+
+    <!-- Main Navigation Tabs -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-view="home">🏠 Domů</button>
+      <button class="nav-btn" data-view="browse">🔍 Procházet</button>
+      <button class="nav-btn" data-view="add">➕ Přidat</button>
+      <button class="nav-btn" data-view="map">🗺 Mapa</button>
+      <button class="nav-btn" data-view="myitems">📦 Mé věci</button>
+    </nav>
+
+    <!-- Views Container -->
+    <main class="views-container">
+
+      <!-- HOME VIEW -->
+      <section class="view active" id="home-view">
+        <div class="view-content">
+          <h2>Vítejte v ReUse Česko</h2>
+          <p class="subtitle">Sdílej věci, které již nepotřebuješ</p>
+
+          <div class="featured-section">
+            <h3>🌟 Novinky</h3>
+            <div id="featured-items" class="items-grid">
+              <!-- Items will be loaded here -->
+            </div>
+          </div>
+
+          <div class="quick-actions">
+            <button class="action-btn" id="quick-add-btn">Chci něco přidat</button>
+            <button class="action-btn secondary" id="quick-browse-btn">Procházet věci</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- BROWSE VIEW -->
+      <section class="view" id="browse-view">
+        <div class="view-content">
+          <h2>Procházet věci</h2>
+
+          <div class="filters">
+            <select id="category-filter" class="filter-select">
+              <option value="">Všechny kategorie</option>
+              <option value="Oblečení">Oblečení</option>
+              <option value="Nábytek">Nábytek</option>
+              <option value="Elektronika">Elektronika</option>
+              <option value="Knihy">Knihy</option>
+              <option value="Ostatní">Ostatní</option>
+            </select>
+
+            <select id="location-filter" class="filter-select">
+              <option value="">Všechna místa</option>
+              <option value="Praha">Praha</option>
+              <option value="Brno">Brno</option>
+              <option value="Ostrava">Ostrava</option>
+              <option value="Plzeň">Plzeň</option>
+              <option value="Liberec">Liberec</option>
+              <option value="Olomouc">Olomouc</option>
+              <option value="České Budějovice">České Budějovice</option>
+            </select>
+
+            <input type="text" id="search-input" class="search-input" placeholder="Hledat...">
+          </div>
+
+          <div id="items-list" class="items-grid">
+            <!-- Items will be loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ADD ITEM VIEW -->
+      <section class="view" id="add-view">
+        <div class="view-content">
+          <h2>Přidat novou věc</h2>
+
+          <form id="add-item-form" class="form">
+            <div class="form-group">
+              <label for="item-title">Název věci *</label>
+              <input type="text" id="item-title" placeholder="např. Starý stůl" required>
+            </div>
+
+            <div class="form-group">
+              <label for="item-description">Popis *</label>
+              <textarea id="item-description" placeholder="Popiš stav a detaily..." required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="item-category">Kategorie *</label>
+              <select id="item-category" required>
+                <option value="">Vyber kategorii</option>
+                <option value="Oblečení">Oblečení</option>
+                <option value="Nábytek">Nábytek</option>
+                <option value="Elektronika">Elektronika</option>
+                <option value="Knihy">Knihy</option>
+                <option value="Ostatní">Ostatní</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="item-location">Lokalita *</label>
+              <select id="item-location" required>
+                <option value="">Vyber město</option>
+                <option value="Praha">Praha</option>
+                <option value="Brno">Brno</option>
+                <option value="Ostrava">Ostrava</option>
+                <option value="Plzeň">Plzeň</option>
+                <option value="Liberec">Liberec</option>
+                <option value="Olomouc">Olomouc</option>
+                <option value="České Budějovice">České Budějovice</option>
+                <option value="Havířov">Havířov</option>
+                <option value="Kladno">Kladno</option>
+                <option value="Most">Most</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="item-photo">Foto (max 2MB)</label>
+              <input type="file" id="item-photo" accept="image/*" class="file-input">
+              <div id="photo-preview" class="photo-preview"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Publikovat věc</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- MAP VIEW -->
+      <section class="view" id="map-view">
+        <div class="view-content">
+          <h2>Věci podle místa</h2>
+          <div id="map-container" class="map-container">
+            <!-- Map locations will be displayed here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- MY ITEMS VIEW -->
+      <section class="view" id="myitems-view">
+        <div class="view-content">
+          <h2>Mé věci</h2>
+          <div id="my-items-list" class="items-grid">
+            <!-- User's items will be loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ITEM DETAIL VIEW (Modal-like) -->
+      <section class="view modal" id="item-detail-view">
+        <div class="modal-content">
+          <button class="close-btn" id="close-detail">✕</button>
+          <div id="item-detail-content">
+            <!-- Item details will be loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- PROFILE VIEW -->
+      <section class="view modal" id="profile-view">
+        <div class="modal-content">
+          <button class="close-btn" id="close-profile">✕</button>
+          <h2>Můj profil</h2>
+          <form id="profile-form" class="form">
+            <div class="form-group">
+              <label for="profile-name">Jméno</label>
+              <input type="text" id="profile-name" placeholder="Tvoje jméno">
+            </div>
+            <div class="form-group">
+              <label for="profile-email">Email</label>
+              <input type="email" id="profile-email" placeholder="tvuj@email.com">
+            </div>
+            <div class="form-group">
+              <label for="profile-phone">Telefon</label>
+              <input type="tel" id="profile-phone" placeholder="+420 ...">
+            </div>
+            <div class="form-group">
+              <label for="profile-bio">Bio</label>
+              <textarea id="profile-bio" placeholder="Něco o sobě..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Uložit profil</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- MESSAGES VIEW -->
+      <section class="view modal" id="messages-view">
+        <div class="modal-content">
+          <button class="close-btn" id="close-messages">✕</button>
+          <h2>Zprávy</h2>
+          <div id="messages-list" class="messages-list">
+            <!-- Messages will be loaded here -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
